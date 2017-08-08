@@ -8,15 +8,17 @@ from snippets.models import (
 
 
 class SnippetSerializer(serializers.ModelSerializer):
-    model = Snippet
-    fields = (
-        'id',
-        'title',
-        'code',
-        'linenos',
-        'language',
-        'style',
-        )
+
+    class Meta:
+        model = Snippet
+        fields = (
+            'id',
+            'title',
+            'code',
+            'linenos',
+            'language',
+            'style',
+            )
 
 
 # class SnippetSerializer(serializers.Serializer):
