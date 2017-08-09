@@ -11,10 +11,11 @@ from snippets.models import (
 User = get_user_model()
 
 
-class UserSerializer(serializers.ModelSerializer):
-    snippets = serializers.PrimaryKeyRelatedField(
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    snippets = serializers.HyperlinkedRelatedField(
                                                     many=True,
-                                                    queryset=Snippet.objects.all())
+                                                    view_name="snippet-detail",
+                                                    read_only=True)
 
     class Meta:
         model = User
@@ -22,13 +23,17 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 
-class SnippetSerializer(serializers.ModelSerializer):
+class SnippetSerializer(serializers.HyperlinkedModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
+    highlight = serializers.HyperlinkedIdentityField(view_name='snippet-highlight',
+                                                                                  format='html')
 
     class Meta:
         model = Snippet
         fields = (
+            'url',
             'id',
+            'highlight',
             'title',
             'code',
             'linenos',
